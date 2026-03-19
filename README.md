@@ -62,11 +62,17 @@ Project Structure
 │   └── coffee_sales_clean.csv
 
 ├── src/
+
 │   ├── barista_ai.py
+
 │   └── recommender.py
+
 ├── app.py
+
 ├── .env
+
 ├── requirements.txt
+
 └── streamlit_app.py
 
 
