@@ -5,7 +5,7 @@ Este projeto é um sistema de recomendação inteligente que combina análise de
 O sistema utiliza injeção dinâmica de contexto para adaptar recomendações com base no horário do dia e no comportamento histórico de vendas.
 
 
-# Features
+## Features
 - Context-aware coffee recommendations
 - Integration with real sales data
 - Time-based personalization (morning, afternoon, evening)
@@ -13,11 +13,11 @@ O sistema utiliza injeção dinâmica de contexto para adaptar recomendações c
 - Data-driven decision making
 
 
-# O Problema
+## O Problema
 Menus de cafeterias de especialidade podem ser complexos para o cliente médio. A escolha entre diferentes métodos (V60, AeroPress, Prensa) e grãos (notas sensoriais, acidez, corpo) muitas vezes gera fricção no momento da compra.
 
 
-# A Solução: Context Engineering
+## A Solução: Context Engineering
 O sistema não é apenas um chatbot genérico. Ele opera em três camadas:
 
 1. Data Layer
@@ -30,7 +30,7 @@ Captura o horário atual do sistema para adaptar o contexto da recomendação.
 Utiliza um prompt estruturado que injeta dinamicamente os dados filtrados, garantindo recomendações relevantes, contextuais e baseadas em evidência.
 
 
-# Arquitetura do sistema (System Architecture)
+## Arquitetura do sistema (System Architecture)
 
 User Input
 ↓
@@ -45,7 +45,7 @@ LLM Response (Gemini)
 Final Recommendation
 
 
-# Tecnologias Utilizadas
+## Tecnologias Utilizadas
 - Python
 - Pandas (data analysis)
 - Google Gemini 2.0 Flash Lite (LLM)
@@ -54,7 +54,7 @@ Final Recommendation
 - Streamlit
 
 
-# Estrutura do Projeto
+## Estrutura do Projeto
 Project Structure
 
 ├── data/
@@ -68,11 +68,11 @@ Project Structure
 └── streamlit_app.py
 
 
-# Configuração e Instalação
+## Configuração e Instalação
 1. Clone o repositório:
 
 Bash
-git clone https://github.com/seu-usuario/ai-barista.git
+git clone https://github.com/judonato/ai-barista.git
 cd ai-barista
 
 2. Crie um ambiente virtual e instale as dependências:
@@ -99,12 +99,12 @@ Opção 2: Versão CLI
     python app.py
 
 
-# Exemplo de Uso
+## Exemplo de Uso
 CLIENTE: "Quero algo para acompanhar meu café agora à tarde."
 
 BARISTA VIRTUAL: "Boa tarde! Para este momento, recomendo nosso Scone artesanal — um pãozinho amanteigado de origem escocesa que harmoniza perfeitamente com a acidez vibrante do nosso café filtrado mais pedido de hoje. Aceita essa sugestão?"
 
-# Evoluções Futuras
+## Evoluções Futuras
 - RAG (Retrieval-Augmented Generation): Incluir PDFs de manuais técnicos de grãos para respostas ainda mais profundas.
 
 - API de Clima: Ajustar recomendações baseadas na temperatura externa (ex: sugerir Cold Brews em dias de calor).
