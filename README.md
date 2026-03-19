@@ -58,7 +58,9 @@ Final Recommendation
 Project Structure
 
 ├── data/
+
 │   └── coffee_sales_clean.csv
+
 ├── src/
 │   ├── barista_ai.py
 │   └── recommender.py
