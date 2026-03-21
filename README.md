@@ -9,12 +9,24 @@ Este projeto é um sistema de recomendação inteligente que combina análise de
 O sistema utiliza injeção dinâmica de contexto para adaptar recomendações com base no horário do dia e no comportamento histórico de vendas.
 
 
-## Features
-- Context-aware coffee recommendations
-- Integration with real sales data
-- Time-based personalization (morning, afternoon, evening)
-- LLM-powered conversational interface
-- Data-driven decision making
+## Funcionalidades
+
+- Recomendações de café sensíveis ao contexto  
+- Integração com dados reais de vendas  
+- Personalização baseada no período do dia (manhã, tarde, noite)  
+- Interface conversacional baseada em LLM  
+- Tomada de decisão orientada por dados
+
+
+## Caso de Uso no Mundo Real
+
+Este sistema pode ser aplicado em cafeterias de especialidade para:
+
+- orientar a decisão do cliente  
+- aumentar o ticket médio  
+- reduzir a fricção em menus complexos  
+
+**Exemplo:** Um menu acessado via QR Code onde o cliente interage com um barista de IA para receber recomendações personalizadas.
 
 
 ## O Problema
@@ -32,6 +44,17 @@ Captura o horário atual do sistema para adaptar o contexto da recomendação.
 
 3. LLM Inference Layer
 Utiliza um prompt estruturado que injeta dinamicamente os dados filtrados, garantindo recomendações relevantes, contextuais e baseadas em evidência.
+
+
+## Insight Técnico Principal
+
+Este sistema vai além de um chatbot genérico ao combinar:
+
+- **Injeção de dados**: dados reais de vendas são incorporados dinamicamente ao prompt  
+- **Consciência de contexto**: as recomendações se adaptam ao período do dia  
+- **Raciocínio híbrido**: filtragem determinística + geração via LLM  
+
+Isso resulta em uma arquitetura de IA híbrida (orientada por dados + generativa).
 
 
 ## Arquitetura do sistema (System Architecture)
