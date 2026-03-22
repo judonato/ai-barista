@@ -1,5 +1,6 @@
 import os
 import pytz
+import streamlit as st
 from google import genai
 from dotenv import load_dotenv
 from datetime import datetime
@@ -7,7 +8,7 @@ from .recommender import load_sales_data, top_products_by_period
 
 load_dotenv()
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
 # Carregamento global dos dados
 df = load_sales_data()
