@@ -14,12 +14,14 @@ client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 df = load_sales_data()
 top_products_df = top_products_by_period(df)
 
+
+# -------------------------
+# CONTEXTO
+# -------------------------
 def get_service_context():
-    # Fuso horário local (Brasília/Rio de Janeiro)
     fuso = pytz.timezone('America/Sao_Paulo')
     current_hour = datetime.now(fuso).hour
     
-    # Foco apenas em operação de cafeteria (Manhã e Tarde)
     if 5 <= current_hour < 12:
         return {
             "periodo": "morning",
@@ -28,7 +30,6 @@ def get_service_context():
             "estilo": "atencioso e profissional"
         }
     else:
-        # Tarde e Noite tratamos como uma operação de café contínua
         return {
             "periodo": "afternoon",
             "persona": "Barista de Especialidade",
@@ -36,44 +37,97 @@ def get_service_context():
             "estilo": "acolhedor e técnico"
         }
 
-def ask_barista(question: str):
+
+# -------------------------
+# LÓGICA DE CONTROLE
+# -------------------------
+def is_order_final(user_input: str):
+    keywords = ["quero", "vou querer", "esse", "pode ser", "sim", "fechado"]
+    return any(word in user_input.lower() for word in keywords)
+
+
+def build_history(messages):
+    # pega só últimas 5 mensagens pra não poluir
+    history = messages[-5:]
+    return "\n".join([f"{m['role']}: {m['content']}" for m in history])
+
+
+# -------------------------
+# FUNÇÃO PRINCIPAL
+# -------------------------
+def ask_barista(question: str, messages: list):
     ctx = get_service_context()
-    
-    # Filtra os dados de vendas apenas para o período atual para maior precisão
+
+    # CONTROLE DE ESTADO
+    if "stage" not in st.session_state:
+        st.session_state.stage = "greeting"
+
+    stage = st.session_state.stage
+
+    # 👉 FINALIZAÇÃO (ANTES DO LLM)
+    if is_order_final(question) and stage != "finished":
+        st.session_state.stage = "finished"
+
+        return f"""
+Perfeito! Pedido confirmado.
+
+Agora é só finalizar seu pedido com a equipe no caixa.
+Agradecemos a visita!
+"""
+
+    # CONTEXTO DE DADOS
     current_top = top_products_df[top_products_df['period'] == ctx['periodo']]
     context_data = current_top.to_string(index=False)
-    
+
+    # HISTÓRICO
+    history_text = build_history(messages)
+
+    # CONTROLE DE SAUDAÇÃO
+    greeting_rule = (
+        "Comece com 'Boas vindas'"
+        if stage == "greeting"
+        else "NÃO faça saudação. Vá direto ao ponto."
+    )
+
+    # PROMPT
     prompt = f"""
     Você é um {ctx['persona']} de uma cafeteria de cafés especiais.
-    Seu tom de voz deve ser {ctx['estilo']}.
+    Seu tom deve ser {ctx['estilo']}.
 
-    CONTEXTO DO MOMENTO:
-    - Período: {ctx['periodo']}
-    - Foco sugerido: {ctx['foco']}
-    - Itens populares agora (baseado em dados): 
+    REGRAS:
+    - {greeting_rule}
+    - Seja breve e direto
+    - Não repita explicações
+    - Use termos de barismo (acidez, torra, corpo, notas)
+    - Se o cliente já decidiu, NÃO sugira mais nada
+    - Nunca diga 'Bem vindo', apenas 'Boas vindas' na primeira mensagem
+    - Nunca mencione números de vendas ou dados brutos ao cliente
+    - Se a pergunta for fora do tema "cafeteria", peça desculpas e retorne ao assunto de cafés
+    - Se mencionar o 'Scone', explique brevemente: "um pãozinho amanteigado de origem escocesa"
+
+    CONTEXTO:
+    Período: {ctx['periodo']}
+    Foco: {ctx['foco']}
+
+    ITENS POPULARES:
     {context_data}
 
-    PERGUNTA DO CLIENTE: 
-    "{question}"
+    HISTÓRICO:
+    {history_text}
 
-    INSTRUÇÕES:
-    1. SAUDAÇÃO: Verifique o HISTÓRICO. Se você já disse 'Boas vindas' ou saudou o cliente, NÃO repita. Vá direto à resposta.
-    2. Use termos técnicos de barismo (notas sensoriais, torra, corpo, acidez).
-    2. Seja muito breve e direto. Use poucas palavras.
-    3. Se mencionar o 'Scone', explique brevemente: "um pãozinho amanteigado de origem escocesa".
-    4. FINALIZAÇÃO (MUITO IMPORTANTE): Se o cliente escolheu um item, confirmou um pedido ou disse 'quero esse', você deve:
-       - Parar de recomendar coisas.
-       - Repetir os itens que ele escolheu (ex: 'Perfeito, um Chai Tea e um Scone!').
-       - Dizer EXATAMENTE: 'Perfeito! Agora é só finalizar seu pedido com a equipe no caixa. Agradecemos a visita!'
-       - Não adicione mais nenhuma palavra após essa frase.
-    5. Nunca mencione números de vendas ou dados brutos ao cliente.
-    6. Se a pergunta for fora do tema "cafeteria", peça desculpas e retorne ao assunto de cafés.
-    7. Nunca diga 'Bem vindo' ou 'Bem vinda'. Use apenas 'Boas vindas' para todos os clientes.
+    CLIENTE:
+    {question}
+
+    Responda como barista:
     """
 
     response = client.models.generate_content(
-        model="gemini-flash-latest",
+        model="gemini-1.5-flash",
         contents=prompt
     )
+
+    # muda estado depois da primeira resposta
+    if stage == "greeting":
+        st.session_state.stage = "ordering"
 
     return response.text
