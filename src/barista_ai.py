@@ -29,12 +29,21 @@ def get_service_context():
             "foco": "cafés energéticos, métodos de extração clara e itens de café da manhã.",
             "estilo": "atencioso e profissional"
         }
-    else:
+    
+    elif 12 <= current_hour < 18:
         return {
             "periodo": "afternoon",
             "persona": "Barista de Especialidade",
             "foco": "cafés equilibrados, harmonização com doces e lanches da tarde.",
             "estilo": "acolhedor e técnico"
+        }
+    
+    else:
+        return {
+            "periodo": "evening",
+            "persona": "Barista de Especialidade",
+            "foco": "bebidas mais suaves, opções descafeinadas e experiências relaxantes.",
+            "estilo": "calmo e acolhedor"
         }
 
 
