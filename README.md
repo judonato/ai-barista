@@ -1,9 +1,10 @@
-AI Barista – Context-Aware Coffee Recommendation System
+# AI Barista – Context-Aware Coffee Recommendation System
 
 
 ![AI Barista Demo](./assets/demo.gif)
 
-🚀 Live Demo: https://ai-barista.streamlit.app/
+
+LIVE DEMO: https://ai-barista.streamlit.app/
 
 Este projeto é um sistema de recomendação inteligente que combina análise de dados reais com um Large Language Model (LLM) para simular um barista especialista.
 
