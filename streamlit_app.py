@@ -30,7 +30,7 @@ if prompt := st.chat_input("Como posso ajudar com seu café hoje?"):
     with st.chat_message("assistant"):
         with st.spinner("Preparando sua recomendação..."):
             try:
-                response = ask_barista(prompt, chat_history=st.session_state.messages)
+                response = ask_barista(prompt)
             except Exception as e:
                 response = "⚠️ Ocorreu um erro ao gerar a recomendação. Tente novamente."
 
