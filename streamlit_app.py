@@ -40,10 +40,18 @@ if prompt := st.chat_input("Como posso ajudar com seu café hoje?"):
     # Adiciona a resposta da IA ao histórico
     st.session_state.messages.append({"role": "assistant", "content": response})
 
+period_translation = {
+    "morning": "manhã",
+    "afternoon": "tarde",
+    "evening": "noite"
+}
+
 with st.sidebar:
     st.header("⚙️ Status do Sistema")
     ctx = get_service_context()
     
-    st.info(f"📍 Período: {ctx['periodo'].capitalize()}")
+    periodo_pt = period_translation.get(ctx['periodo'], ctx['periodo'])
+    
+    st.info(f"📍 Período: {periodo_pt.capitalize()}")
     st.info(f"👤 Persona: {ctx['persona']}")
     st.write("Dados de vendas carregados com sucesso. ✅")
