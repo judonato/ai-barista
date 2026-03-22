@@ -86,6 +86,7 @@ Final Recommendation
 Project Structure
 
 ├── assets/
+
 │   └── demo.png
 
 ├── data/
@@ -111,8 +112,8 @@ Project Structure
 1. Clone o repositório:
 
 Bash
-git clone https://github.com/judonato/ai-barista.git
-cd ai-barista
+git clone https://github.com/judonato/ai-barista-recommendation-system.git
+cd ai-barista-recommendation-system
 
 2. Crie um ambiente virtual e instale as dependências:
 
